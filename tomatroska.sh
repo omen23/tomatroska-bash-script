@@ -43,10 +43,12 @@ if [[ $? -eq 0 ]]; then
     echo "All done - exiting..."
     exit 0
   else [[ $answer = [Nn] ]]
-    echo -n "Do you want to move input file to trash? (Y/N)? "
+    echo -n "Do you want to move the input file to trash? (Y/N)? "
     if readYes; then
       echo "Moving \"$INFILE\" to trash..."
-      kioclient move "$INFILE" trash:/
+      # idk maybe make this more portable but I dont wanna – mv "home/$USER/.local/share/Trash/files/"
+      # someone please let me know if GNOME Shell and Unity use the same trash:/ folder or the counterpart of kioclient
+      kioclient move "$INFILE" trash:/ 
       echo "\"$INFILE\" is in trash - all done - exiting..."
       exit 0
     fi
