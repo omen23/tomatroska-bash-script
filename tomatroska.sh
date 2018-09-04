@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 # by omen23 © 2018 
-# -> CXX rewrite with libav coming soon… (= 
+# -> CXX rewrite with libavcodec coming soon… (= 
 # (was supposed to be) just a one liner to put my movie in a matroska container so my TV likes it (ten-split/chapters, fast rwnd and fwd)
 # USE: container(most likely mp4) will be changed to matroska (mkv) - original file can be shredded, moved to trash or left intact
 # NOTE this is written with a GNU/Linux OS using KDE as GUI in mind - the "move to trash" function uses kioclient - I have no clue if those work with GTK3+ systems
