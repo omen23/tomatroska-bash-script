@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 # by omen23 © 2018 
-# -> CXX rewrite with libavcodec coming soon… (= 
+# -> CXX rewrite with libav coming soon… (= 
 # (was supposed to be) just a one liner to put my movie in a matroska container so my TV likes it (ten-split/chapters, fast rwnd and fwd)
 # USE: container(most likely mp4) will be changed to matroska (mkv) - original file can be shredded, moved to trash or left intact
 # NOTE this is written with a GNU/Linux OS using KDE as GUI in mind - the "move to trash" function uses kioclient - I have no clue if those work with GTK3+ systems
@@ -33,7 +33,7 @@ OUTFILE="/home/$USER/Films/$OUTFILE.x264.AAC.mkv" # set the absolute path
 
 ffmpeg -i "$INFILE" -c:v copy -c:a copy "$OUTFILE" -v -8
 if [[ $? -eq 0 ]]; then
-  echo "$OUTFILE - `date`" >> "/home/$USER/Films/filmlist.txt"
+  echo "\"${OUTFILE##/*/}\" - `date`" >> "/home/$USER/Films/filmlist.txt" # remove absolute path from filmlist
   echo -e "\nContainer conversion success!"
   echo -e "\"$OUTFILE\" is ready to be played on the TV!\n"
   echo -n "Do you want to secure-delete the input file with shred? (Y/N)? "
