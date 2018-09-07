@@ -31,9 +31,10 @@ echo "Codec details and the file ending will be added automatically"
 read -p "Now specify the name you want for the output file (omit final dot, file format and codec details): " OUTFILE
 OUTFILE="/home/$USER/Films/$OUTFILE.x264.AAC.mkv" # set the absolute path 
 
-ffmpeg -i "$INFILE" -c:v copy -c:a copy "$OUTFILE" -v -8
+ffmpeg -i "$INFILE" -c:v copy -c:a copy "$OUTFILE" -v -8 # if anyone wonders why i dont re-encode with -c:v libx264 / -c:a aac it is because all mp4 container movies I download are already in this format if not it still works on my TV
+# you can change that if you like but the bitrate fiddling with 2 pass ABR so you get the same bitrate... you will never get the same encode - so a copy is best — I just need a different container
 if [[ $? -eq 0 ]]; then
-  echo "\"${OUTFILE##/*/}\" — `date`" >> "/home/$USER/Films/filmlist.txt" # remove absolute path from filmlist
+  echo "\"${OUTFILE##/*/}\" — `date`" >> "/home/$USER/Films/filmlist.txt" # remove absolute path from film that will be added list
   echo -e "\nContainer conversion success!"
   echo -e "\"$OUTFILE\" is ready to be played on the TV!\n"
   echo -n "Do you want to secure-delete the input file with shred? (Y/N)? "
