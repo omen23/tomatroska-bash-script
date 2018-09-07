@@ -11,14 +11,13 @@ trap 'echo; echo "Caught signal..."; echo "Exiting..."; exit 130' SIGTSTP SIGINT
 # ------------------
 readYes()
 {
-while read -r -n 1 answer; do
-  if [[ $answer = [JjNnYy] ]]; then
-    [[ $answer = [JjYy] ]] && retval=0
-    [[ $answer = [Nn] ]] && retval=1
+while read -r answer; do
+  if [[ ${answer:0:1} = [JjNnYy] ]]; then
+    [[ ${answer:0:1} = [JjYy] ]] && retval=0
+    [[ ${answer:0:1} = [Nn] ]] && retval=1
     break
   fi
 done
-echo # just a final linefeed, optics...
 return $retval
 }
 
