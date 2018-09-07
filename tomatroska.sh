@@ -33,7 +33,7 @@ OUTFILE="/home/$USER/Films/$OUTFILE.x264.AAC.mkv" # set the absolute path
 
 ffmpeg -i "$INFILE" -c:v copy -c:a copy "$OUTFILE" -v -8
 if [[ $? -eq 0 ]]; then
-  echo "\"${OUTFILE##/*/}\" - `date`" >> "/home/$USER/Films/filmlist.txt" # remove absolute path from filmlist
+  echo "\"${OUTFILE##/*/}\" — `date`" >> "/home/$USER/Films/filmlist.txt" # remove absolute path from filmlist
   echo -e "\nContainer conversion success!"
   echo -e "\"$OUTFILE\" is ready to be played on the TV!\n"
   echo -n "Do you want to secure-delete the input file with shred? (Y/N)? "
