@@ -26,6 +26,10 @@ echo "#### \"toMatroska\" container conversion script         ####"
 echo -e "##########################################################\n"
 #echo "##########################################################"
 read -p "Please specify the input file and press ENTER: " INFILE
+if [[ ! -a $INFILE ]]; then
+  echo "The specified infile does not exist – maybe you called the script in the wrong directory."
+  exit 127
+fi
 echo "Codec details and the file ending will be added automatically"
 read -p "Now specify the name you want for the output file (omit final dot, file format and codec details): " OUTFILE
 OUTFILE="/home/$USER/Films/$OUTFILE.x264.AAC.mkv" # set the absolute path 
