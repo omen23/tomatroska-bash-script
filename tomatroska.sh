@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 # by omen23 © 2018 
-# -> CXX rewrite with libavcodec coming soon… (= 
+# -> CXX rewrite with libav coming soon… (= 
 # (was supposed to be) just a one liner to put my movie in a matroska container so my TV likes it (ten-split/chapters, fast rwnd and fwd)
 # USE: container(most likely mp4) will be changed to matroska (mkv) - original file can be shredded, moved to trash or left intact
 # NOTE this is written with a GNU/Linux OS using KDE as GUI in mind - the "move to trash" function uses kioclient - I have no clue if those work with GTK3+ systems
@@ -12,8 +12,8 @@ trap 'echo; echo "Caught signal..."; echo "Exiting..."; exit 130' SIGTSTP SIGINT
 readYes()
 {
 while read -r answer; do
-  if [[ ${answer:0:1} = [JjNnYy] ]]; then
-    [[ ${answer:0:1} = [JjYy] ]] && retval=0
+  if [[ ${answer:0:1} = [YyNnJj] ]]; then
+    [[ ${answer:0:1} = [JjYY] ]] && retval=0
     [[ ${answer:0:1} = [Nn] ]] && retval=1
     break
   fi
@@ -30,12 +30,12 @@ echo "Codec details and the file ending will be added automatically"
 read -p "Now specify the name you want for the output file (omit final dot, file format and codec details): " OUTFILE
 OUTFILE="/home/$USER/Films/$OUTFILE.x264.AAC.mkv" # set the absolute path 
 
-ffmpeg -i "$INFILE" -c:v copy -c:a copy "$OUTFILE" -v -8 # if anyone wonders why i dont re-encode with -c:v libx264 / -c:a aac it is because all mp4 container movies I download are already in this format if not it still works on my TV
-# you can change that if you like but the bitrate fiddling with 2 pass ABR so you get the same bitrate... you will never get the same encode - so a copy is best — I just need a different container
+ffmpeg -i "$INFILE" -c:v copy -c:a copy "$OUTFILE" -v -8
 if [[ $? -eq 0 ]]; then
-  echo "\"${OUTFILE##/*/}\" — `date`" >> "/home/$USER/Films/filmlist.txt" # remove absolute path from film that will be added list
+  echo "\"${OUTFILE##/*/}\" — `date`" >> "/home/$USER/Films/filmlist.txt"
   echo -e "\nContainer conversion success!"
   echo -e "\"$OUTFILE\" is ready to be played on the TV!\n"
+  notify-send "\"$OUTFILE\" is ready to be played on the TV!" -i notification
   echo -n "Do you want to secure-delete the input file with shred? (Y/N)? "
   if readYes; then
     echo "Deleting \"$INFILE\" with 3 shred overwrites and a final overwrite with zeros to hide shred..."
@@ -54,6 +54,7 @@ if [[ $? -eq 0 ]]; then
     fi
   fi
 echo -e "The original input file \"$INFILE\" will stay intact.\n"
+notify-send "All done!" -i face-smile
 echo "All done - exiting..."
 exit 0
 fi
