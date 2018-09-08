@@ -35,13 +35,13 @@ if [[ $? -eq 0 ]]; then
   echo "\"${OUTFILE##/*/}\" — `date`" >> "/home/$USER/Films/filmlist.txt"
   echo -e "\nContainer conversion successful!"
   echo -e "\"$OUTFILE\" is ready to be played on the TV!\n"
-  notify-send "Container conversion successful" "\"${OUTFILE##/*/}\" is ready to be played on the TV!"  -t 7500 -i preferences-desktop-notification # -i dialog-information
+  notify-send "Container conversion successful" "\"${OUTFILE##/*/}\" is ready to be played on the TV!" -i preferences-desktop-notification -t 7500 #-i dialog-information # 
   echo -n "Do you want to secure-delete the input file with shred? (Y/N)? "
   if readYes; then
     echo "Deleting \"$INFILE\" with 3 shred overwrites and a final overwrite with zeros to hide shred..."
     shred -zuv "$INFILE"
     echo "All done - exiting..."
-    notify-send "All done!" "\"$INFILE\" securely deleted with shred." -i face-smile-big -t 5000
+    notify-send "All done!" "\"$INFILE\" securely deleted with shred." -i face-smile -t 6000
     exit 0
   else [[ $answer = [Nn] ]]
     echo -n "Do you want to move the input file to trash? (Y/N)? "
@@ -51,12 +51,12 @@ if [[ $? -eq 0 ]]; then
       # someone please let me know if GNOME Shell and Unity use the same trash:/ folder or the counterpart of kioclient
       kioclient move "$INFILE" trash:/      
       echo "\"$INFILE\" is in trash - all done - exiting..."
-      notify-send "All done!" "\"$INFILE\" is in trash."  -i face-smile-big -t 5000
+      notify-send "All done!" "\"$INFILE\" is in trash."  -i face-smile -t 6000
       exit 0
     fi
   fi
 echo -e "The original input file \"$INFILE\" will stay intact.\n"
 echo "All done - exiting..."
-notify-send "  All done!" "The original input file \"$INFILE\" will stay intact." -i face-smile-big -t 5000
+notify-send "All done!" "The original input file \"$INFILE\" will stay intact." -i face-smile -t 6000
 exit 0
 fi
