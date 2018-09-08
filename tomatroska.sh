@@ -47,7 +47,7 @@ if [[ $? -eq 0 ]]; then
     echo "All done - exiting..."
     notify-send "All done!" "\"$INFILE\" securely deleted with shred." -i face-smile -t 6000
     exit 0
-  else [[ $answer = [Nn] ]]
+  else # [[ $answer = [Nn] ]]
     echo -n "Do you want to move the input file to trash? (Y/N)? "
     if readYes; then
       echo "Moving \"$INFILE\" to trash..."
