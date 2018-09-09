@@ -15,7 +15,6 @@ PROG_NAME=${PROG_PATH##*/}       # basename of script (strip path)
 #PROG_DIR="$(cd "$(dirname "${PROG_PATH:-$PWD}")" 2>/dev/null 1>&2 && pwd)"
 
 desktop_session_help() { cat<<EOF_HELP 1>&2
-
   Usage: $PROG_NAME [ -u | -p | -v | -h ] [{default_desktop_session}]
     Set env var DESKTOP_SESSION, attempting to guess which desktop
     is actually running {gnome, cinnamon, mate, kde,...}.  To run,
@@ -23,14 +22,12 @@ desktop_session_help() { cat<<EOF_HELP 1>&2
        .  \$( $PROG_NAME  )
     or generate script commands, and evaluate the output, e.g.,
        eval \$( $PROG_NAME -p )
-
   Options:
     -h    print this help message
     -p    print commands to execute, to pass to eval
     -q    quiet (disable verbose / debug output)
     -u    unset DESKTOP_SESSION_ID env vars
     -v    verbose/debug output, printed to stderr
-
 EOF_HELP
 }
 
