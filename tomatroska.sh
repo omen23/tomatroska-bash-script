@@ -86,8 +86,8 @@ if [[ $? -eq 0 ]]; then
         ;;
     esac
   fi  
-echo -e "The original input file \"$INFILE\" will stay intact.\n"
-echo "All done - exiting..."
+echo "The original input file \"$INFILE\" will stay intact."
 notify-send "All done!" "The original input file \"$INFILE\" will stay intact." -i face-smile -t 6000
+echo "All done - exiting..."
 exit 0   
 fi
