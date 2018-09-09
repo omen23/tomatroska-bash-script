@@ -66,6 +66,7 @@ if [[ $? -eq 0 ]]; then
   if readYes; then
     echo "Trying to move \"$INFILE\" to trash..."
     GUI=`desktop_session_print`
+    # for the nerds [[ $? -ne 0 ]] && echo "No GUI found - exiting..." && exit 127
     case "$GUI" in 
       plasma)
         kioclient move "$INFILE" trash:/
