@@ -35,7 +35,7 @@ return $retval
 echo "##########################################################"
 echo "#### \"toMatroska\" container conversion script         ####"
 echo -e "##########################################################\n"
-#echo "##########################################################"
+
 read -p "Please specify the input file and press ENTER: " INFILE
 if [[ ! -a $INFILE ]]; then
   echo "The specified infile does not exist – maybe you called the script in the wrong directory."
