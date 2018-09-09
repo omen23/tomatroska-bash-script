@@ -3,9 +3,23 @@
 # -> CXX rewrite with libav coming soon… (= 
 # (was supposed to be) just a one liner to put my movie in a matroska container so my TV likes it (ten-split/chapters, fast rwnd and fwd)
 # USE: container(most likely mp4) will be changed to matroska (mkv) - original file can be shredded, moved to trash or left intact
-# NOTE this is written with a GNU/Linux OS using KDE as GUI in mind - the "move to trash" function uses kioclient - I have no clue if those work with GTK3+ systems
-trap 'echo; echo "Caught signal..."; echo "Exiting..."; exit 130' SIGTSTP SIGINT SIGTERM SIGHUP
 
+# ------------------
+#   SIGNAL HANDLER
+# ------------------
+trap 'echo; echo "Caught signal..."; echo "Exiting..."; exit 130' SIGTSTP SIGINT SIGTERM SIGHUP
+# ------------------
+#    DESKTOP CHECK
+# ------------------
+desktop_session_print() {
+if [ "$DESKTOP_SESSION" != "" ] ; then
+  # use existing DESKTOP_SESSION, if it does NOT contain "default"
+  if ! echo "$DESKTOP_SESSION" | egrep -qi 'default' ; then            
+    echo "$DESKTOP_SESSION"
+    return 0
+  fi
+fi
+} 
 # ------------------
 #    YESNOPROMPT
 # ------------------
@@ -13,7 +27,7 @@ readYes()
 {
 while read -r answer; do
   if [[ ${answer:0:1} = [YyNnJj] ]]; then
-    [[ ${answer:0:1} = [JjYY] ]] && retval=0
+    [[ ${answer:0:1} = [JjYy] ]] && retval=0
     [[ ${answer:0:1} = [Nn] ]] && retval=1
     break
   fi
@@ -40,6 +54,7 @@ if [[ $? -eq 0 ]]; then
   echo -e "\nContainer conversion successful!"
   echo -e "\"$OUTFILE\" is ready to be played on the TV!\n"
   notify-send "Container conversion successful" "\"${OUTFILE##/*/}\" is ready to be played on the TV!" -i preferences-desktop-notification -t 7500 #-i dialog-information # 
+  
   echo -n "Do you want to secure-delete the input file with shred? (Y/N)? "
   if readYes; then
     echo "Deleting \"$INFILE\" with 3 shred overwrites and a final overwrite with zeros to hide shred..."
@@ -47,20 +62,35 @@ if [[ $? -eq 0 ]]; then
     echo "All done - exiting..."
     notify-send "All done!" "\"$INFILE\" securely deleted with shred." -i face-smile -t 6000
     exit 0
-  else # [[ $answer = [Nn] ]]
-    echo -n "Do you want to move the input file to trash? (Y/N)? "
-    if readYes; then
-      echo "Moving \"$INFILE\" to trash..."
-      # idk maybe make this more portable but I dont wanna – mv "home/$USER/.local/share/Trash/files/"
-      # someone please let me know if GNOME Shell and Unity use the same trash:/ folder or the counterpart of kioclient
-      kioclient move "$INFILE" trash:/      
-      echo "\"$INFILE\" is in trash - all done - exiting..."
-      notify-send "All done!" "\"$INFILE\" is in trash."  -i face-smile -t 6000
-      exit 0
-    fi
   fi
+  
+  echo -n "Do you want to move the input file to trash? (Y/N)? "
+  if readYes; then
+    echo "Trying to move \"$INFILE\" to trash..."
+    GUI=`desktop_session_print`
+    case "$GUI" in 
+      plasma)
+        kioclient move "$INFILE" trash:/
+        echo "\"$INFILE\" is in trash - all done - exiting..."
+        notify-send "All done!" "\"$INFILE\" is in trash."  -i face-smile -t 6000
+        exit 0
+        ;;
+      gnome)
+        gvfs-trash "$INFILE"
+        echo "\"$INFILE\" is in trash - all done - exiting..."
+        notify-send "All done!" "\"$INFILE\" is in trash."  -i face-smile -t 6000
+        exit 0
+        ;;
+      *)
+        echo "Could not determine running desktop session — please delete the file yourself."
+        notify-send "Could not determine GUI" "Please delete \"$INFILE\" yourself." -t 6000
+        exit 0
+        ;;
+    esac
+  fi
+  
 echo -e "The original input file \"$INFILE\" will stay intact.\n"
 echo "All done - exiting..."
 notify-send "All done!" "The original input file \"$INFILE\" will stay intact." -i face-smile -t 6000
-exit 0
+exit 0   
 fi
