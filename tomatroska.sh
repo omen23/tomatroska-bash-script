@@ -12,12 +12,9 @@ trap 'echo; echo "Caught signal..."; echo "Exiting..."; exit 130' SIGTSTP SIGINT
 #    DESKTOP CHECK
 # ------------------
 desktop_session_print() {
-if [ "$DESKTOP_SESSION" != "" ] ; then
-  # use existing DESKTOP_SESSION, if it does NOT contain "default"
-  if ! echo "$DESKTOP_SESSION" | egrep -qi 'default' ; then            
-    echo "$DESKTOP_SESSION"
-    return 0
-  fi
+if [ "$DESKTOP_SESSION" != "" ] ; then             
+  echo "$DESKTOP_SESSION"
+  return 0  
 fi
 } 
 # ------------------
