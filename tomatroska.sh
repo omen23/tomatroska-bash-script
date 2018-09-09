@@ -91,4 +91,6 @@ echo "The original input file \"$INFILE\" will stay intact."
 notify-send "All done!" "The original input file \"$INFILE\" will stay intact." -i face-smile -t 6000
 echo "All done - exiting..."
 exit 0   
+else
+  exit 127
 fi
