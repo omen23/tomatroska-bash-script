@@ -1,4 +1,4 @@
-#!/bin/bash
+##!/bin/bash
 #
 # Set DESKTOP_SESSION, guessing which desktop is running (gnome, mate, kde,...)[1]
 # Either source this file to set the env var, *or* eval the output of results.
@@ -52,7 +52,7 @@ desktop_session_print() {
     if [ "$DESKTOP_SESSION" != "" ] ; then
         # use existing DESKTOP_SESSION, if it does NOT contain "default"
         if ! echo "$DESKTOP_SESSION" | egrep -qi 'default' ; then
-            log "using predefined, non-default DESKTOP_SESSION=$DESKTOP_SESSION"
+            #log "using predefined, non-default DESKTOP_SESSION=$DESKTOP_SESSION"
             echo "$DESKTOP_SESSION"
             return 0
         fi
@@ -61,12 +61,12 @@ desktop_session_print() {
     for s in mate cinnamon lxde xfce jwm gnome kde ; do
         # guess session from env vars & processes (precedence matters)
         if search_env "$s" ; then
-            log "assume $s desktop (found ${s}_desktop env var)"
+            #log "assume $s desktop (found ${s}_desktop env var)"
             echo "$s"
             return 0
         fi
         if search_proc " ${s}-" ; then
-            log "looking for ${s}: found process \"${s}-*\""
+            #log "looking for ${s}: found process \"${s}-*\""
             echo "$s"
             return 0
         fi
@@ -74,13 +74,13 @@ desktop_session_print() {
 
     if [ "$DESKTOP_SESSION" != "" ] ; then
         # if set, go ahead and allow DESKTOP_SESSION=default
-        log "using existing desktop session: \"${DESKTOP_SESSION}\""
+        #log "using existing desktop session: \"${DESKTOP_SESSION}\""
         echo "$DESKTOP_SESSION"
         return 0
     fi
 
     # only if DESKTOP_SESSION can't be determined and is unset (returns false)
-    log "using default desktop session: $default_session"
+    #log "using default desktop session: $default_session"
     echo "$default_session"
 
     return 1
@@ -96,36 +96,36 @@ desktop_session_id_unset() {
 
 
 
-desktop_session_main() {
-    local opt OPTIND OPTARG
-    local verbose=false do_unset=false print_cmds=false ret=0 session=
-
-    while getopts hpquv opt ; do
-        case "$opt" in
-          h) desktop_session_help
-             return 1
-             ;;
-          p) print_cmds=true
-             ;;
-          u) do_unset=true
-             ;;
-          v) verbose=true
-             ;;
-          q) verbose=false
-             ;;
-          *) printf "# ** error: unknown option ($@)\n" 1>&2
-             desktop_session_help
-             return 1  #  if sourced, don't exit
-             ;;
-        esac
-    done; shift $((OPTIND-1)); OPTIND=1
-
-    session=$(desktop_session_print $@)
-    ret=$?
-    export DESKTOP_SESSION=$session
-    $print_cmds && echo "export DESKTOP_SESSION=$session"
-    $do_unset && desktop_session_id_unset
-    return $ret
-}
-
-desktop_session_main $@
+# desktop_session_main() {
+#     local opt OPTIND OPTARG
+#     local verbose=false do_unset=false print_cmds=false ret=0 session=
+# 
+#     while getopts hpquv opt ; do
+#         case "$opt" in
+#           h) desktop_session_help
+#              return 1
+#              ;;
+#           p) print_cmds=true
+#              ;;
+#           u) do_unset=true
+#              ;;
+#           v) verbose=true
+#              ;;
+#           q) verbose=false
+#              ;;
+#           *) printf "# ** error: unknown option ($@)\n" 1>&2
+#              desktop_session_help
+#              return 1  #  if sourced, don't exit
+#              ;;
+#         esac
+#     done; shift $((OPTIND-1)); OPTIND=1
+# 
+#     session=$(desktop_session_print $@)
+#     ret=$?
+#     export DESKTOP_SESSION=$session
+#     $print_cmds && echo "export DESKTOP_SESSION=$session"
+#     $do_unset && desktop_session_id_unset
+#     return $ret
+# }
+# 
+# desktop_session_main $@
