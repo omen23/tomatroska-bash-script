@@ -16,6 +16,7 @@ if [ "$DESKTOP_SESSION" != "" ] ; then
   echo "$DESKTOP_SESSION"
   return 0  
 fi
+return 1
 } 
 # ------------------
 #    YESNOPROMPT
