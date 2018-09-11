@@ -43,7 +43,8 @@ if [[ ! -a $INFILE ]]; then
   exit 127
 fi
 echo "Codec details and the file ending will be added automatically"
-read -p "Now specify the name you want for the output file (omit final dot, file format and codec details): " OUTFILE
+echo "(omit final dot, file format and codec details)"
+read -p "Now specify the name you want for the output file: " OUTFILE
 OUTFILE="/home/$USER/Films/$OUTFILE.x264.AAC.mkv" # set the absolute path 
 
 ffmpeg -i "$INFILE" -c:v copy -c:a copy "$OUTFILE" -v -8
