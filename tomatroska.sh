@@ -51,7 +51,7 @@ ffmpeg -i "$INFILE" -c:v copy -c:a copy "$OUTFILE" -v -8
 if [[ $? -eq 0 ]]; then
   echo "\"${OUTFILE##/*/}\" — `date`" >> "/home/$USER/Films/filmlist.txt"
   echo -e "\nContainer conversion successful!"
-  echo -e "\"$OUTFILE\" is ready to be played on the TV!\n"
+  echo -e "\"${OUTFILE##/*/}\" is ready to be played on the TV!\n"
   notify-send "Container conversion successful" "\"${OUTFILE##/*/}\" is ready to be played on the TV!" -i preferences-desktop-notification -t 7500 #-i dialog-information # 
   
   echo -n "Do you want to secure-delete the input file with shred? (Y/N)? "
